@@ -16,11 +16,7 @@ passages run north and east."""),
 
     'overlook': Room("overlook", "at a Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm. \n\n
-you turn around, the grim reaper is behind you,
-he extends his hand that is holding a golden key.
-You look at him unsure... 
-(use "get" or "drop" to get/drop key)""", ['golden']),
+the distance, but there is no way across the chasm.""", ['key']),
 
     'narrow':   Room("narrow","in a Narrow Passage", """The narrow passage bends here from west
 to north. The smell of gold permeates the air."""),
@@ -71,48 +67,47 @@ while True:
     if Hero.room.name == 'treasure':
         pass
     else:
-        print(f'You find yourself {Hero.room.title}, {Hero.room.description}\n')
+        print(f'CURRENT ROOM : {Hero.room.name.upper()}\n\n\n\n')
+        print(f'You find yourself {Hero.room.title}, \n{Hero.room.description}\n')
     action = str(input(''' 
         \n\n \t What to do next?
         n -> Go north
         s -> Go south
         e -> Go east
         w -> Go west
-        k -> To check keys
+        i -> To check items
         s -> Search this room for items
         q -> quit
     '''))
     if action == 'q':
         print('Ok see you later.')
         break
-    elif action == 'get':
-        if len(Hero.room.keys) == 0:
+    elif 'get' in action:
+        if len(Hero.room.items) == 0:
             clear()
             print('There is no items to get in this room \n\n')
             
         else:
             clear()
-            print('You collected the Golden Key! \n\n')
-            Hero.getItem()
-    elif action == 'drop':
-        if len(Hero.keys) == 0:
+            Hero.getItem(action.split()[1])
+    elif 'drop' in action:
+        if len(Hero.items) == 0:
             clear()
             print('There is no items to drop \n\n')
             
         else:
             clear()
-            print('You dropped the Golden Key! \n\n')
-            Hero.dropItem()
-    elif action == 'k':
-        if len(Hero.keys) == 0:
+            Hero.dropItem(action.split()[1])
+    elif action == 'i':
+        if len(Hero.items) == 0:
             clear()
-            print('You don\'t have any keys \n\n')
+            print('You don\'t have any items \n\n')
             
         else:
             clear()
-            Hero.countKeys()
+            Hero.countItems()
     elif action == 'search':
-        if len(Hero.room.keys) == 0:
+        if len(Hero.room.items) == 0:
             clear()
             print('There is no items in this room\n\n')
             

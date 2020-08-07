@@ -2,30 +2,42 @@
 # currently.
 directionMap = { 'n': 'north', 's':'south', 'e': 'east', 'w': 'west'}
 class Player:
-    def __init__(self, room, name="chicken little", keys=[], win=False):
+    def __init__(self, room, name="chicken little", items=[], win=False):
         self.name = name
         self.room = room
-        self.keys = keys
+        self.items = items
         self.win = win
-    def countKeys(self):
-        print(f'Congrats {self.name}, you\'ve found this keys:')
-        for i in self.keys:
-            print(i)
-        print(f'Total: {len(self.keys)} out of 1')
+    def countItems(self):
+        print(f'\nCongrats {self.name}, you\'ve found this items so far:\n')
+        for i in self.items:
+            print(f' - {i} \n')
+        print(f'Total: {len(self.items)} out of 1\n')
     def __str__(self):
-        return f'''\n\tName: {self.name}\n\tRoom: {self.room}\n\tKeys: {self.keys} \n'''
-    def getItem(self):
-            self.keys.append(self.room.keys.pop(self.room.keys.index('golden')))
-    def dropItem(self):
-            self.room.keys.append(self.keys.pop(self.keys.index('golden')))
+        return f'''\n\tName: {self.name}\n\tRoom: {self.room}\n\tItems: {self.items} \n'''
+    def getItem(self, item=None):
+        if item is None:
+            print(f'Please provide an item name like so --> get example')
+        elif item not in self.room.items:
+            print(f'You do not have item --> {item}')
+        else:
+            print(f'You collected item --> {item}! \n\n')
+            self.items.append(self.room.items.pop(self.room.items.index(item)))
+    def dropItem(self, item=None):
+        if item is None:
+            print(f'Please provide an item name to drop like so --> drop example')
+        elif item not in self.items:
+            print(f'You do not have item --> {item}')
+        else:
+            print(f'You dropped the item --> {item}! \n\n')
+            self.room.items.append(self.items.pop(self.items.index(item)))
     def move(self, direction):
-            # print('direction:', direction, 'golden' in self.keys )
+            # print('direction:', direction, 'golden' in self.items )
             print(f'\n\n\n You\'ve choosen to go {directionMap.get(direction)}...\n')
             nextRoom = getattr(self.room, f'{direction}_to', None)
             if nextRoom is None:
                 print(f'There is nothing in this direction, so you go back...')
             elif nextRoom.name == 'treasure':
-                if 'golden' in self.keys:
+                if 'key' in self.items:
                     self.room = nextRoom
                     print(f'\t\nYou find yourself {self.room.title}, you use the key to open it')
                     print(f'\t\n{self.room.description}')
